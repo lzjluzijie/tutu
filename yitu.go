@@ -1,17 +1,15 @@
 package main
 
 import (
-	"encoding/json"
 	"io/ioutil"
 	"log"
-	"net/http"
 	"os"
 	"path"
 	"path/filepath"
 	"regexp"
 	"strings"
 
-	"github.com/lzjluzijie/MultipartReader"
+	"github.com/lzjluzijie/yitu/uploaders/6tu"
 
 	"github.com/urfave/cli"
 )
@@ -29,7 +27,7 @@ func main() {
 		Flags: []cli.Flag{
 			cli.StringFlag{
 				Name:  "p",
-				Usage: "filepath",
+				Usage: "file or dir",
 			},
 		},
 		Action: func(c *cli.Context) (err error) {
@@ -124,57 +122,25 @@ func HandleFile(p string) (err error) {
 	return
 }
 
-type Image struct {
-	Name  string
-	Size  int64
-	Short string
-	URL   string
-}
-
 func Replace(old string) (replaced string, err error) {
 	replaced = old
 
 	re := regexp.MustCompile(`!\[(.*)\]\((.*)\)`)
 	matches := re.FindAllStringSubmatch(old, -1)
 
+	//todo
+	uploader := tu.Uploader{}
+
 	for _, match := range matches {
-		url := match[2]
-		name := path.Base(url)
-		resp, err := http.Get(url)
+		src := match[2]
+		url, err := uploader.Upload(src)
 		if err != nil {
-			log.Println(err)
+			log.Println(err.Error())
 			continue
 		}
 
-		reader := multipartreader.NewMultipartReader()
-		reader.AddFormReader(resp.Body, "tu", name, resp.ContentLength)
-
-		req, err := http.NewRequest("POST", "https://6tu.halu.lu/api/upload", reader)
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-
-		reader.SetupHTTPRequest(req)
-		resp, err = http.DefaultClient.Do(req)
-
-		data, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-
-		log.Println(string(data))
-
-		image := &Image{}
-		err = json.Unmarshal(data, image)
-		if err != nil {
-			log.Printf("json unmarshal %s error: %s", string(data), err.Error())
-			continue
-		}
-
-		replaced = strings.Replace(replaced, url, image.URL, -1)
-		log.Printf("replace %s with %s", url, image.URL)
+		replaced = strings.Replace(replaced, src, url, -1)
+		log.Printf("replace %s with %s", src, url, url)
 	}
 	return
 }
