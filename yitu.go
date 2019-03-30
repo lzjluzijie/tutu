@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/lzjluzijie/yitu/uploaders/smms"
 	"io/ioutil"
 	"log"
 	"os"
@@ -8,8 +9,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-
-	"github.com/lzjluzijie/yitu/uploaders/6tu"
 
 	"github.com/urfave/cli"
 )
@@ -129,7 +128,7 @@ func Replace(old string) (replaced string, err error) {
 	matches := re.FindAllStringSubmatch(old, -1)
 
 	//todo
-	uploader := tu.Uploader{}
+	uploader := smms.Uploader{}
 
 	for _, match := range matches {
 		src := match[2]
@@ -140,7 +139,7 @@ func Replace(old string) (replaced string, err error) {
 		}
 
 		replaced = strings.Replace(replaced, src, url, -1)
-		log.Printf("replace %s with %s", src, url, url)
+		log.Printf("replace %s with %s", src, url)
 	}
 	return
 }
