@@ -17,9 +17,9 @@ func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 	app := &cli.App{
-		Name:        "yitu",
+		Name:        "tutu",
 		Usage:       "A simple tool that helps you replace images in markdown files.",
-		Description: "https://github.com/lzjluzijie/yitu",
+		Description: "https://github.com/lzjluzijie/tutu",
 		Version:     "initial",
 		Author:      "Halulu",
 		Email:       "lzjluzijie@gmail.com",
