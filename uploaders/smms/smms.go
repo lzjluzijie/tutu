@@ -2,26 +2,27 @@ package smms
 
 import (
 	"encoding/json"
-	multipartreader "github.com/lzjluzijie/MultipartReader"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"path"
+
+	multipartreader "github.com/lzjluzijie/MultipartReader"
 )
 
 type Uploader struct {
 }
 
 type UploadResponse struct {
-	Code  string
+	Code string
 	Data UploadResponseData
 }
 
 type UploadResponseData struct {
 	FileName  string
 	StoreName string
-	Size  int64
-	URL   string
+	Size      int64
+	URL       string
 }
 
 func (uploader Uploader) Upload(src string) (url string, err error) {

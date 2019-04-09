@@ -1,7 +1,6 @@
 package main
 
 import (
-	"github.com/lzjluzijie/yitu/uploaders/smms"
 	"io/ioutil"
 	"log"
 	"os"
@@ -9,6 +8,8 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+
+	"github.com/lzjluzijie/tutu/uploaders/smms"
 
 	"github.com/urfave/cli"
 )

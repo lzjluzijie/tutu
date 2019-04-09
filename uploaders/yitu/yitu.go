@@ -1,4 +1,4 @@
-package tu
+package yitu
 
 import (
 	"encoding/json"
@@ -30,7 +30,7 @@ func (uploader Uploader) Upload(src string) (url string, err error) {
 	reader := multipartreader.NewMultipartReader()
 	reader.AddFormReader(resp.Body, "tu", name, resp.ContentLength)
 
-	req, err := http.NewRequest("POST", "https://6tu.halu.lu/api/upload", reader)
+	req, err := http.NewRequest("POST", "https://t.halu.lu/api/upload", reader)
 	if err != nil {
 		return
 	}
