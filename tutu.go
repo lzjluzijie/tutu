@@ -9,10 +9,14 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/lzjluzijie/tutu/uploaders"
 	"github.com/lzjluzijie/tutu/uploaders/smms"
+	"github.com/lzjluzijie/tutu/uploaders/yitu"
 
 	"github.com/urfave/cli"
 )
+
+var uploader uploaders.Uploader
 
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
@@ -29,8 +33,22 @@ func main() {
 				Name:  "p",
 				Usage: "file or dir",
 			},
+			cli.StringFlag{
+				Name:  "u",
+				Usage: "uploader",
+			},
 		},
 		Action: func(c *cli.Context) (err error) {
+			switch c.String("u") {
+			case "yitu":
+				uploader = yitu.Uploader{}
+				break
+
+			default:
+				uploader = smms.Uploader{}
+				break
+			}
+
 			p := c.String("p")
 			if p == "" {
 				panic("path is empty!")
@@ -127,9 +145,6 @@ func Replace(old string) (replaced string, err error) {
 
 	re := regexp.MustCompile(`!\[(.*)\]\((.*)\)`)
 	matches := re.FindAllStringSubmatch(old, -1)
-
-	//todo
-	uploader := smms.Uploader{}
 
 	for _, match := range matches {
 		src := match[2]

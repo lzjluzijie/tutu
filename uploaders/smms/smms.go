@@ -42,6 +42,9 @@ func (uploader Uploader) Upload(src string) (url string, err error) {
 
 	reader.SetupHTTPRequest(req)
 	resp, err = http.DefaultClient.Do(req)
+	if err != nil {
+		return
+	}
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

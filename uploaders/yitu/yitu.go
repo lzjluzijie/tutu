@@ -5,38 +5,22 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"path"
-
-	"github.com/lzjluzijie/MultipartReader"
 )
 
 type Uploader struct {
 }
 
 type UploadResponse struct {
-	Name  string
-	Size  int64
-	Short string
-	URL   string
+	Name string
+	Size int64
+	URL  string
 }
 
 func (uploader Uploader) Upload(src string) (url string, err error) {
-	name := path.Base(src)
-	resp, err := http.Get(src)
+	resp, err := http.PostForm("https://t.halu.lu/api/upload", map[string][]string{"url": {src}})
 	if err != nil {
 		return
 	}
-
-	reader := multipartreader.NewMultipartReader()
-	reader.AddFormReader(resp.Body, "tu", name, resp.ContentLength)
-
-	req, err := http.NewRequest("POST", "https://t.halu.lu/api/upload", reader)
-	if err != nil {
-		return
-	}
-
-	reader.SetupHTTPRequest(req)
-	resp, err = http.DefaultClient.Do(req)
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
