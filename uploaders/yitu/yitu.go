@@ -8,6 +8,7 @@ import (
 )
 
 type Uploader struct {
+	W string
 }
 
 type UploadResponse struct {
@@ -35,6 +36,6 @@ func (uploader Uploader) Upload(src string) (url string, err error) {
 		return
 	}
 
-	url = uResp.URL
+	url = uResp.URL + uploader.W
 	return
 }

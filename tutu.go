@@ -43,6 +43,15 @@ func main() {
 			case "yitu":
 				uploader = yitu.Uploader{}
 				break
+			case "yitu-webp":
+				uploader = yitu.Uploader{W: "/webp"}
+				break
+			case "yitu-fhd":
+				uploader = yitu.Uploader{W: "/fhd"}
+				break
+			case "yitu-fhdwebp":
+				uploader = yitu.Uploader{W: "/fhdwebp"}
+				break
 
 			default:
 				uploader = smms.Uploader{}
